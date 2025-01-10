@@ -1,0 +1,448 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API",
+        "description": "This is the API documentation",
+        "contact": {
+            "email": "support@example.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "/api/"
+        }
+    ],
+    "paths": {
+        "/v1/buildings/{building_id}/organizations": {
+            "get": {
+                "tags": [
+                    "Organizations"
+                ],
+                "summary": "Get organizations in a specific building",
+                "operationId": "9eb856a485b4c7a26ddbbb4fb6ad999c",
+                "parameters": [
+                    {
+                        "name": "building_id",
+                        "in": "path",
+                        "description": "ID of the building",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of organizations",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Organization"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Organization not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ]
+            }
+        },
+        "/v1/activities/{activity_id}/organizations": {
+            "get": {
+                "tags": [
+                    "Organizations"
+                ],
+                "summary": "Get organizations by activity",
+                "description": "Returns a list of organizations associated with a specific activity.",
+                "operationId": "70581f1291715f4b73b0ebffeb3d151a",
+                "parameters": [
+                    {
+                        "name": "activity_id",
+                        "in": "path",
+                        "description": "ID of the activity",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of organizations",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Organization"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Organization not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ]
+            }
+        },
+        "/v1/organizations/nearby": {
+            "get": {
+                "tags": [
+                    "Organizations"
+                ],
+                "summary": "Get organizations within a specified radius from a point",
+                "operationId": "5c77244b7836e81798e1c68ef468a5b1",
+                "parameters": [
+                    {
+                        "name": "latitude",
+                        "in": "query",
+                        "description": "Latitude of the center point",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "format": "float"
+                        }
+                    },
+                    {
+                        "name": "longitude",
+                        "in": "query",
+                        "description": "Longitude of the center point",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "format": "float"
+                        }
+                    },
+                    {
+                        "name": "radius",
+                        "in": "query",
+                        "description": "Radius in kilometers",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "format": "float"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of nearby organizations",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OrganizationResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Organization not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ]
+            }
+        },
+        "/v1/organizations/{id}": {
+            "get": {
+                "tags": [
+                    "Organizations"
+                ],
+                "summary": "Get organization by ID",
+                "operationId": "ac759ff36834c01172250876285c2a80",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the organization",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Organization details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OrganizationResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Organization not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ]
+            }
+        },
+        "/v1/organizations/by-activity-name": {
+            "get": {
+                "tags": [
+                    "Organizations"
+                ],
+                "summary": "Get organizations by activity name",
+                "description": "Search for organizations by a specific activity name, including its nested activities.",
+                "operationId": "acaeb39ff683c03ed18996573cf803c0",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Name of the activity to search for",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of organizations",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/OrganizationResponse2"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Organization not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ]
+            }
+        },
+        "/v1/organizations/by-name": {
+            "get": {
+                "tags": [
+                    "Organizations"
+                ],
+                "summary": "Search organization by name",
+                "description": "Fetches an organization along with its phone numbers and activities by name.",
+                "operationId": "3a336b465bcf9d9227f8afc6da139a75",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Name of the organization to search for.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Organization found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OrganizationResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Organization not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "PhoneNumber": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 466
+                    },
+                    "phone_number": {
+                        "type": "string",
+                        "example": "+10112852857"
+                    }
+                },
+                "type": "object"
+            },
+            "Activity": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 3
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Свинина"
+                    },
+                    "parent_id": {
+                        "type": "integer",
+                        "example": 2
+                    }
+                },
+                "type": "object"
+            },
+            "Organization": {
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 23
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Hahn Ltd"
+                    },
+                    "building_id": {
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "phone_numbers": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/PhoneNumber"
+                        }
+                    },
+                    "activities": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Activity"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "OrganizationResponse": {
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "phoneNumbers": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "activities": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "OrganizationResponse2": {
+                "description": "Response containing organization details",
+                "properties": {
+                    "data": {
+                        "description": "List of organizations",
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "id": {
+                                    "description": "Organization ID",
+                                    "type": "integer",
+                                    "example": 74
+                                },
+                                "name": {
+                                    "description": "Name of the organization",
+                                    "type": "string",
+                                    "example": "Shanahan, Simonis and Wyman"
+                                },
+                                "building_id": {
+                                    "description": "ID of the building associated with the organization",
+                                    "type": "integer",
+                                    "example": 28
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "apiKey": {
+                "type": "apiKey",
+                "in": "header",
+                "name": "X-API-KEY"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Organizations",
+            "description": "Organizations"
+        }
+    ],
+    "security": [
+        {
+            "apiKey": []
+        }
+    ]
+}
