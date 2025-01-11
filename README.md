@@ -18,6 +18,14 @@ docker-compose up -d --build
 
 docker exec -it laravel_app composer install
 
+## Run Migrations
+
+docker exec -it laravel_app php artisan migrate
+
+## Seed the Database
+
+docker exec -it laravel_app php artisan db:seed
+
 ## Swagger
 
 http://localhost:9000/api/documentation
