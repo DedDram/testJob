@@ -16,15 +16,7 @@ docker-compose up -d --build
 
 ### Install PHP Dependencies
 
-docker-compose exec laravel_app composer install
-
-## Run Migrations
-
-docker-compose exec laravel_app php artisan migrate
-
-## Seed the Database
-
-docker-compose exec laravel_app php artisan db:seed
+docker exec -it laravel_app composer install
 
 ## Swagger
 
